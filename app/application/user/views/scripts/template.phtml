@@ -1,7 +1,9 @@
 <?php
 $csu = Class_Session_User::getInstance();
 $naviArr = array(
-	'left' => array(),
+	'left' => array(
+		array('title' => '修改密码', 'url' => '/'.$csu->getUserId().'/user/index/password')
+	),
 	'right' =>array(
 		array('title' => '我的账户', 'url' => '/'.$csu->getUserId().'/user')
 	)
@@ -29,6 +31,23 @@ $naviArr = array(
 			<div class='action-menu'>
 				<?php echo $this->extension('ActionMenu', $this->actionMenu) ?>
 			</div>
+			<div class='flash-message'>
+	<?php 
+		$messenger = new Zend_Controller_Action_Helper_FlashMessenger();
+		$messages = $messenger->getMessages();
+		if(count($messages) > 0) {
+	?>
+				<div class='brick-admin-flash-message'>
+	<?php	
+			foreach($messages as $m) {
+				echo "<div>".$m."</div>";
+			}
+	?>
+				</div>
+	<?php 
+		}
+	?>
+		</div>
 			<?php echo $this->layout()->content ?>
 		</div></div>
 	</div>

@@ -7,6 +7,8 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		$autoloader->registerNamespace('Class_');
 		$autoloader->registerNamespace('Twig_');
 		$autoloader->registerNamespace('App_');
+		
+		Class_Server::config();
 	}
 	
 	protected function _initMongoDb()
@@ -26,7 +28,8 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $controller->setControllerDirectory(array(
             'default' => APP_PATH.'/default/controllers',
         	'user' => APP_PATH.'/user/controllers',
-        	'admin' => APP_PATH.'/admin/controllers'
+        	'admin' => APP_PATH.'/admin/controllers',
+        	'rest' => APP_PATH.'/rest/controllers'
         ));
         
         $controller->throwExceptions(true);
