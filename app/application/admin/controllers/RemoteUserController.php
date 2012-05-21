@@ -1,5 +1,5 @@
 <?php
-class Admin_UserController extends Zend_Controller_Action 
+class Admin_RemoteUserController extends Zend_Controller_Action 
 {
 	public function indexAction()
 	{
