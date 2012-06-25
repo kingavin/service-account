@@ -9,7 +9,7 @@ class Rest_OrgController extends Zend_Rest_Controller
 	
 	public function indexAction()
 	{
-		$pageSize = 20;
+		$pageSize = 40;
 		$currentPage = 1;
 		
 		$co = App_Factory::_m('RemoteOrganization');
