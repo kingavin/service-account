@@ -1,25 +1,30 @@
-<table class='data'>
-</table>
-<ul class='paginator'>
-</ul>
+<div class='datalist'>
+	<table class='datalist'>
+		<thead>
+			<tr class='title-row'>
+				<th>组织名</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+	<ul id='datalist-paginator'>
+	</ul>
+</div>
 
 <script>
-	window.dataRowActions = {'edit':'编辑'};
+	window.restUrl = '/rest/org'
 </script>
 
 <script type='text/template' id='data-row'>
-<%_.each(data, function(type, key) {if(key != 'id') {%>
-	<td>{{type}}</td>
-<%}});%>
-
 <td>
-<%
-_.each(window.dataRowActions, function(label, action) {
-%>
-	<a href='/admin/org/{{action}}/id/{{data.id}}'>{{label}}</a>
-<%
-});
-%>
+	{{data.orgName}}
+</td>
+<td>
+	<a href='/admin/org/edit/id/{{data.id}}'>编辑</a>
 </td>
 </script>
-<script data-main="http://st.onlinefu.com/ext/model/main" src="http://st.onlinefu.com/ext/model/require-jquery.js"></script>
+
+
+<script data-main="<?=Class_Server::extUrl()?>/app/data" src="<?=Class_Server::extUrl()?>/require-jquery.js"></script>

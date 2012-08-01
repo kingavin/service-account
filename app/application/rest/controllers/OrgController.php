@@ -9,8 +9,12 @@ class Rest_OrgController extends Zend_Rest_Controller
 	
 	public function indexAction()
 	{
+		$currentPage = $this->getRequest()->getParam('page');
+		
 		$pageSize = 40;
-		$currentPage = 1;
+		if(empty($currentPage)) {
+			$currentPage = 1;
+		}
 		
 		$co = App_Factory::_m('RemoteOrganization');
 		$co->setFields(array('orgName'));

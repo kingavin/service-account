@@ -3,6 +3,8 @@ class Admin_OrgController extends Zend_Controller_Action
 {
 	public function indexAction()
 	{
+		
+		
 		$this->_helper->template->actionMenu(array('create'));
 	}
 	
