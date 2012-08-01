@@ -1,0 +1,43 @@
+<div class='datalist'>
+	<table class='datalist'>
+		<thead>
+			<tr class='title-row'>
+				<th>用户名</th>
+				<th>密码</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+</div>
+
+<script>
+	window.restUrl = '/rest/remote-user'
+</script>
+
+<script type='text/template' id='data-row'>
+<td>
+	{{data.username}}
+</td>
+<td>
+	{{data.password}}
+</td>
+<td>
+	<a href='/admin/org/edit/id/{{data.id}}'>编辑</a>
+</td>
+</script>
+
+
+<script data-main="<?=Class_Server::extUrl()?>/app/data" src="<?=Class_Server::extUrl()?>/require-jquery.js"></script>
+<script>
+Backbone.old_sync = Backbone.sync;
+Backbone.sync = function(method, model, options) {
+    var new_options =  _.extend({
+        beforeSend: function(xhr) {
+        	xhr.setRequestHeader('Org_Code', '<?php echo $this->orgCode?>');
+        }
+    }, options)
+    Backbone.old_sync(method, model, new_options);
+};
+</script>

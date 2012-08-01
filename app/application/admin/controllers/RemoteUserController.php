@@ -5,8 +5,12 @@ class Admin_RemoteUserController extends Zend_Controller_Action
 	{
 		$orgCode = $this->getRequest()->getParam('orgCode');
 		if(is_null($orgCode)) {
-			
+			throw new Exception('org code needed to display users!');
 		}
+		
+		$this->view->orgCode = $orgCode;
+		
+		$this->_helper->template->actionMenu(array('create'));
 	}
 	
 	public function createAction()
@@ -44,7 +48,7 @@ class Admin_RemoteUserController extends Zend_Controller_Action
 			if($ruDoc->isNewDocument()) {
 				$ruDoc->loginName = $form->getValue('loginName');
 				$ruDoc->orgCode = $orgCode;
-				$ruDoc->password = rand(111111, 999999);
+				$ruDoc->password = (string)rand(111111, 999999);
 				$ruDoc->save();
 			} else {
 				$ruDoc->loginName = $form->getValue('loginName');
