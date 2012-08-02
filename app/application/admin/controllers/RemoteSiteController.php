@@ -49,8 +49,12 @@ class Admin_RemoteSiteController extends Zend_Controller_Action
 			if (curl_error($ch)) {
     			print curl_error($ch);
 			} else {
-				$returnArr = Zend_Json::decode($returned);
-				
+				try {
+					$returnArr = Zend_Json::decode($returned);
+				} catch(Exception $e) {
+					Zend_Debug::dump($returned);
+					die();
+				}
 				$remotesiteCo = App_Factory::_m('RemoteSite');
 				$remotesiteDoc = $remotesiteCo->create();
 				$remotesiteDoc->orgCode = $orgCode;
