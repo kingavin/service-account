@@ -18,9 +18,6 @@ class Rest_OrgController extends Zend_Rest_Controller
 		
 		$co = App_Factory::_m('RemoteOrganization');
 		$co->setFields(array('orgName'));
-		$queryArray = array();
-		
-        $result = array();
         
         foreach($this->getRequest()->getParams() as $key => $value) {
             if(substr($key, 0 , 7) == 'filter_') {
@@ -40,6 +37,7 @@ class Rest_OrgController extends Zend_Rest_Controller
 		$data = $co->fetchAll(true);
 		$dataSize = $co->count();
 		
+		$result = array();
 		$result['data'] = $data;
         $result['dataSize'] = $dataSize;
         $result['pageSize'] = $pageSize;

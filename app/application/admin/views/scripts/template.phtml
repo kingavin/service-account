@@ -10,6 +10,7 @@ $naviArr = array(
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
 	<link type="text/css" href="<?=Class_Server::extUrl()?>/reset-backend.css" media="screen" rel="stylesheet">
 	<link type="text/css" href="<?=Class_Server::extUrl()?>/common-extension.css" media="screen" rel="stylesheet">
+	<link type="text/css" href="<?=Class_Server::extUrl()?>/admin/head-desc.css" media="screen" rel="stylesheet">
 	<link type="text/css" href="<?=Class_Server::extUrl()?>/app/data.css" media="screen" rel="stylesheet">
 	<script type="text/javascript"	src="<?=Class_Server::extUrl()?>/jub.js"></script>
 	<script type="text/javascript"	src="<?=Class_Server::extUrl()?>/common-extension.js"></script>
@@ -19,12 +20,30 @@ $naviArr = array(
 
 <body>
 	<?php echo $this->extension('Navi', $naviArr)?>
-	<br />
-	<br />
 	<div class='body_main_frame'>
+		<div class='head-desc'>
+			<?php echo $this->head?>
+		</div>
 		<div class='whitebox'><div class='content'>
 			<div class='action-menu'>
 				<?php echo $this->extension('ActionMenu', $this->actionMenu) ?>
+			</div>
+			<div class='flash-message'>
+			<?php 
+				$messenger = new Zend_Controller_Action_Helper_FlashMessenger();
+				$messages = $messenger->getMessages();
+				if(count($messages) > 0) {
+			?>
+				<ul>
+			<?php	
+					foreach($messages as $m) {
+						echo "<div>".$m."</div>";
+					}
+			?>
+				</ul>
+			<?php 
+				}
+			?>
 			</div>
 			<?php echo $this->layout()->content ?>
 		</div></div>

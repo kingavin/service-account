@@ -2,8 +2,7 @@
 	<table class='datalist'>
 		<thead>
 			<tr class='title-row'>
-				<th>用户名</th>
-				<th>密码</th>
+				<th>网站名</th>
 				<th></th>
 			</tr>
 		</thead>
@@ -13,18 +12,15 @@
 </div>
 
 <script>
-	window.restUrl = '/rest/remote-user'
+	window.restUrl = '/rest/remote-site'
 </script>
 
 <script type='text/template' id='data-row'>
 <td>
-	{{data.loginName}}
+	{{data.label}}
 </td>
 <td>
-	{{data.password}}
-</td>
-<td>
-	<a href='/admin/remote-user/edit/id/{{data.id}}'>编辑</a>
+	<a href='/admin/remote-site/edit/id/{{data.id}}'>编辑</a>
 </td>
 </script>
 

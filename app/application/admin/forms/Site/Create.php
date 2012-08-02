@@ -3,8 +3,16 @@ class Form_Site_Create extends Zend_Form
 {
 	public function init()
 	{
-		$this->addElement('text', 'loginName', array(
-			'label' => 'Site Name'
+		$this->addElement('radio', 'server', array(
+			'label' => '服务器',
+			'multioptions' => array(
+				'apple' => 'Apple'
+			)
+		));
+		
+		$this->addElement('select', 'language', array(
+			'label' => '网站语言',
+			'multioptions' => array('ch' => '中文', 'en' => '英语', 'fr' => '法语')
 		));
 	}
 }

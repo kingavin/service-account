@@ -4,13 +4,18 @@ class Admin_RemoteUserController extends Zend_Controller_Action
 	public function indexAction()
 	{
 		$orgCode = $this->getRequest()->getParam('orgCode');
-		if(is_null($orgCode)) {
-			throw new Exception('org code needed to display users!');
+		$orgCo = App_Factory::_m('RemoteOrganization');
+		$orgDoc = $orgCo->find($orgCode);
+		
+		if(is_null($orgDoc)) {
+			throw new Exception('org not found with given code: '.$orgCode);
 		}
 		
 		$this->view->orgCode = $orgCode;
+		$this->view->orgDoc = $orgDoc;
 		
-		$this->_helper->template->actionMenu(array('create'));
+		$this->_helper->template->actionMenu(array('create'))
+			->head('账户管理:<em>'.$orgDoc->orgName.'</em>');
 	}
 	
 	public function createAction()
@@ -34,12 +39,14 @@ class Admin_RemoteUserController extends Zend_Controller_Action
 			throw new Exception('user not found!');
 		}
 		
+		$orgCo = App_Factory::_m('RemoteOrganization');
+		$orgDoc = $orgCo->find($orgCode);
+		
 		$ro = App_Factory::_m('RemoteOrganization');
 		$roDoc = $ro->find($orgCode);
 		if(is_null($roDoc)) {
 			throw new Exception('org not found!');
 		}
-		
 		
 		require APP_PATH.'/admin/forms/User/Edit.php';
 		$form = new Form_User_Edit();
@@ -55,7 +62,7 @@ class Admin_RemoteUserController extends Zend_Controller_Action
 				$ruDoc->save();
 			}
 			$this->_helper->flashMessenger->addMessage('New User Created!');
-			$this->_helper->redirector->gotoSimple('edit', 'org', null, array('id' => $orgCode));
+			$this->_helper->redirector->gotoSimple('index', 'remote-user', null, array('orgCode' => $orgCode));
 		}
 		$this->view->form = $form;
 		
@@ -64,10 +71,17 @@ class Admin_RemoteUserController extends Zend_Controller_Action
 		} else {
 			$this->_helper->template->actionMenu(array('save', 'delete'));
 		}
+		$this->_helper->template->head('账户管理:<em>'.$orgDoc->orgName.'</em>');
 	}
 	
 	public function deleteAction()
 	{
+		$userId = $this->getRequest()->getParam('id');
+		$ru = App_Factory::_m('RemoteUser');
+		$ruDoc = $ru->find($userId);
+		$orgCode = $ruDoc->orgCode;
 		
+		$ruDoc->delete();
+		$this->_helper->redirector->gotoSimple('index', 'remote-user', null, array('orgCode' => $orgCode));
 	}
 }
