@@ -60,6 +60,7 @@ class Admin_RemoteSiteController extends Zend_Controller_Action
 				$remotesiteDoc->orgCode = $orgCode;
 				$remotesiteDoc->language = $orgCode;
 				$remotesiteDoc->label = $roDoc->orgName.'-'.$form->getValue('language');
+				$remotesiteDoc->serverFullName = $serverFullName;
 				$remotesiteDoc->setFromArray($returnArr);
 				
 				$remotesiteDoc->save();
@@ -76,7 +77,52 @@ class Admin_RemoteSiteController extends Zend_Controller_Action
 	
 	public function editAction()
 	{
+		$id = $this->getRequest()->getParam('id');
+		$co = App_Factory::_m('RemoteSite');
+		$doc = $co->find($id);
 		
+		require APP_PATH.'/admin/forms/Site/Edit.php';
+		$form = new Form_Site_Edit();
+		$form->populate($doc->toArray());
+		
+		if($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getParams())) {
+			$serverFullName = $remotesiteDoc->serverFullName;
+			$putArr = array(
+				'domainName' => $form->getValue('domainName')
+			);
+			
+			$putString = Zend_Json::encode($putArr);
+			
+			$ch = curl_init("http://".$serverFullName."/rest/site/".$doc->remoteId);
+			curl_setopt($ch, CURLOPT_PUT, true);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $putString);
+			curl_setopt($ch, CURLOPT_HEADER, 0);
+			$returned = curl_exec($ch);
+			
+			if (curl_error($ch)) {
+    			print curl_error($ch);
+			} else {
+				try {
+					$returnArr = Zend_Json::decode($returned);
+				} catch(Exception $e) {
+					Zend_Debug::dump($returned);
+					die();
+				}
+				$doc->domainName = $form->getValue('domainName');
+				$doc->save();
+			}
+			curl_close($ch);
+			
+			$this->_helper->flashMessenger->addMessage('网站信息已更新');
+    		$this->_helper->redirector->gotoSimple('index', null, null, array('orgCode' => $doc->orgCode));
+		}
+		
+		$this->view->doc = $doc;
+		$this->view->form = $form;
+		
+		$this->_helper->template->actionMenu(array('save'))
+			->head('绑定域名:<em>'.$doc->label.'</em>');
 	}
 	
 	public function deleteAction()
