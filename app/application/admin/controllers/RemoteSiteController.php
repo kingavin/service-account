@@ -86,7 +86,7 @@ class Admin_RemoteSiteController extends Zend_Controller_Action
 		$form->populate($doc->toArray());
 		
 		if($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getParams())) {
-			$serverFullName = $remotesiteDoc->serverFullName;
+			$serverFullName = $doc->serverFullName;
 			$putArr = array(
 				'domainName' => $form->getValue('domainName')
 			);
@@ -94,7 +94,7 @@ class Admin_RemoteSiteController extends Zend_Controller_Action
 			$putString = Zend_Json::encode($putArr);
 			
 			$ch = curl_init("http://".$serverFullName."/rest/site/".$doc->remoteId);
-			curl_setopt($ch, CURLOPT_PUT, true);
+			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $putString);
 			curl_setopt($ch, CURLOPT_HEADER, 0);
