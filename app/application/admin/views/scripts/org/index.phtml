@@ -2,22 +2,40 @@
 	<table class='datalist'>
 		<thead>
 			<tr class='title-row'>
-				<th>组织名</th>
+				<th class='s-index' s-index='_id' style='width: 165px;'>ID</th>
+				<th class='s-index' s-index='orgName' style='width: 485px;'>组织名</th>
 				<th></th>
+			</tr>
+			<tr class='search-row'>
+				<th></th>
+				<th><input class='q-index' q-index='orgName' type='text' name='' value='' /></th>
+				<th><div class='query-invoker' class='button'>Search</div></th>
 			</tr>
 		</thead>
 		<tbody>
 		</tbody>
+		<tfoot>
+			<tr><td id='datalist-paginator' colspan='3'>
+			</td></tr>
+		</tfoot>
 	</table>
-	<ul id='datalist-paginator'>
-	</ul>
 </div>
+
+
+<!-- div class='page-pre'></div>
+				<div class='page-displayer'>
+					| Page <input id='currentPageNumber' type='text' name='currentPage' value='1' /> / <span id='totalPageNumber'></span> |
+				</div>
+				<div class='page-next'></div -->
 
 <script>
 	window.restUrl = '/rest/org'
 </script>
 
 <script type='text/template' id='data-row'>
+<td>
+	{{data.id}}
+</td>
 <td>
 	{{data.orgName}}
 </td>
