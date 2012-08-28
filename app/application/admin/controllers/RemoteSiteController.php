@@ -34,6 +34,7 @@ class Admin_RemoteSiteController extends Zend_Controller_Action
 			
 			$siteInfo = array(
 				'organizationCode' => $orgCode,
+				'siteFoder' => $orgCode,
 				'label' => $roDoc->orgName.'-'.$form->getValue('language')
 			);
 			
@@ -58,7 +59,7 @@ class Admin_RemoteSiteController extends Zend_Controller_Action
 				$remotesiteCo = App_Factory::_m('RemoteSite');
 				$remotesiteDoc = $remotesiteCo->create();
 				$remotesiteDoc->orgCode = $orgCode;
-				$remotesiteDoc->language = $orgCode;
+				$remotesiteDoc->siteFolder = $orgCode;
 				$remotesiteDoc->label = $roDoc->orgName.'-'.$form->getValue('language');
 				$remotesiteDoc->serverFullName = $serverFullName;
 				$remotesiteDoc->setFromArray($returnArr);

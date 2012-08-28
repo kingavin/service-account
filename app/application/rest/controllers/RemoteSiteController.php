@@ -23,7 +23,19 @@ class Rest_RemoteSiteController extends Zend_Rest_Controller
 	
 	public function getAction()
 	{
+		$siteId = $this->getRequest()->getParam('id');
+		$co = App_Factory::_m('RemoteSite');
+		$doc = $co->find($siteId);
 		
+		$result = array();
+		if(is_null($doc)) {
+			$result['errMsg'] = 'site not found with id'. $siteId;
+			$result['result'] = 'fail';
+		} else {
+			$result['data'] = $doc->toArray();
+			$result['result'] = 'success';
+		}
+        $this->_helper->json($result);
 	}
 	
 	public function postAction()
