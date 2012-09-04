@@ -1,5 +1,5 @@
 <?php
-class Rest_RemoteSiteController extends Zend_Rest_Controller 
+class Rest_RemoteTemplateController extends Zend_Rest_Controller 
 {
 	public function init()
 	{
@@ -9,7 +9,7 @@ class Rest_RemoteSiteController extends Zend_Rest_Controller
 	
 	public function indexAction()
 	{
-		$orgCode = $this->getRequest()->getHeader('Org_Code');
+		$orgCode = '4f7455866d5461b00b000000';
 		
 		$currentPage = $this->getRequest()->getParam('page');
 		$sIndex = $this->getRequest()->getParam('sIndex');
@@ -23,7 +23,7 @@ class Rest_RemoteSiteController extends Zend_Rest_Controller
 		
 		$co = App_Factory::_m('RemoteSite');
 		$co->addFilter('orgCode', $orgCode);
-		$co->setFields(array('domainName', 'label', 'subdomainName'));
+		$co->setFields(array('domainName', 'label', 'subdomainName', 'siteFolder', 'filename'));
         $co->setPage($currentPage)->setPageSize($pageSize)
 			->sort($sIndex, $sOrder);
 			
@@ -48,36 +48,13 @@ class Rest_RemoteSiteController extends Zend_Rest_Controller
         $result['pageSize'] = $pageSize;
         $result['currentPage'] = $currentPage;
         
+        $this->getResponse()->setHeader('Access-Control-Allow-Origin', '*');
         $this->_helper->json($result);
 	}
 	
 	public function getAction()
 	{
-		$siteId = $this->getRequest()->getParam('id');
-		$co = App_Factory::_m('RemoteSite');
-		$doc = $co->find($siteId);
 		
-		$result = array();
-		if(is_null($doc)) {
-			$orgCo = App_Factory::_m('RemoteOrganization');
-			$orgDoc = $orgCo->find($siteId);
-			if(is_null($orgDoc)) {
-				$result['errMsg'] = 'site not found with id'. $siteId;
-				$result['result'] = 'fail';
-			} else {
-				$result['data'] = array(
-					'siteId' => $orgDoc->getId(),
-					'orgCode' => $orgDoc->getId(),
-					'label' => $orgDoc->orgName.' {'.'shared org folder'.'}',
-					'remoteId' => 'not-set'
-				);
-				$result['result'] = 'success';
-			}
-		} else {
-			$result['data'] = $doc->toArray();
-			$result['result'] = 'success';
-		}
-        $this->_helper->json($result);
 	}
 	
 	public function postAction()

@@ -31,10 +31,16 @@ class Admin_RemoteSiteController extends Zend_Controller_Action
 		$form = new Form_Site_Create();
 		if($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getParams())) {
 			$serverFullName = 'server.'.$form->getValue('server').'.fucms.com';
+			$remotesiteCo = App_Factory::_m('RemoteSite');
+			$remotesiteDoc = $remotesiteCo->create();
+			$remotesiteDoc->orgCode = $orgCode;
+			$remotesiteDoc->label = $roDoc->orgName.'-'.$form->getValue('language');
+			$remotesiteDoc->serverFullName = $serverFullName;
+			$remotesiteDoc->save();
 			
 			$siteInfo = array(
 				'organizationCode' => $orgCode,
-				'siteFoder' => $orgCode,
+				'siteId' => $remotesiteDoc->getId(),
 				'label' => $roDoc->orgName.'-'.$form->getValue('language')
 			);
 			
@@ -56,12 +62,7 @@ class Admin_RemoteSiteController extends Zend_Controller_Action
 					Zend_Debug::dump($returned);
 					die();
 				}
-				$remotesiteCo = App_Factory::_m('RemoteSite');
-				$remotesiteDoc = $remotesiteCo->create();
-				$remotesiteDoc->orgCode = $orgCode;
-				$remotesiteDoc->siteFolder = $orgCode;
-				$remotesiteDoc->label = $roDoc->orgName.'-'.$form->getValue('language');
-				$remotesiteDoc->serverFullName = $serverFullName;
+				
 				$remotesiteDoc->setFromArray($returnArr);
 				
 				$remotesiteDoc->save();

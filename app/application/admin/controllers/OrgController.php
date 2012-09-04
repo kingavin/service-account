@@ -25,6 +25,10 @@ class Admin_OrgController extends Zend_Controller_Action
 				throw new Exception('remote organization not found with id: '.$id);
 			}
 			
+			$siteDocs = App_Factory::_m('RemoteSite')->addFilter('orgCode', $id)
+				->fetchDoc();
+			$folderDocs = App_Factory::_m('RemoteFolder')->addFilter('orgCode', $id)
+				->fetchDoc();
 			$userDocs = App_Factory::_m('RemoteUser')->addFilter('orgCode', $id)
 				->fetchDoc();
 		}
@@ -39,6 +43,8 @@ class Admin_OrgController extends Zend_Controller_Action
 		}
 		
 		$this->view->orgCode = $id;
+		$this->view->siteDocs = $siteDocs;
+		$this->view->folderDocs = $folderDocs;
 		$this->view->userDocs = $userDocs;
 		$this->view->form = $form;
 		

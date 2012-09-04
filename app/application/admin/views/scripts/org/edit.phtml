@@ -1,10 +1,65 @@
 <?php echo $this->form?>
 
-<?php foreach($this->userDocs as $doc) {?>
-
-<a href='/admin/remote-user/edit/id/<?php echo $doc->getId()?>'><?php echo $doc->loginName?></a>
-
-<?php }?>
-<hr />
-
-<a href='/admin/remote-site/create/orgCode/<?php echo $this->orgCode?>'>增加网站</a>
+<div>
+	<div style='border: 1px solid red;'>
+		<ul>
+			<li>站点磁盘空</li>
+			<li>管理员</li>
+		</ul>
+	</div>
+	
+	<div style='border: 1px solid red;'>
+		<ul class='group'>
+			<li class='heading'>站点磁盘空间</li>
+			<li class='buttonbar'>
+				<a class='ajax-content-prompt-trigger' href='#'>划分新分区</a>
+			</li>
+			<li class='hint'>
+				同一个网站的不同语言版本请放在同一个分区中！如fucms-中文, fucms-English，只需要在default空间下添加语言版本即可！<br />
+				如果此公司需要再建立网站，如建立一个全新的www.abc.com网站，则先划分空间，然后在新空间下加入即可！
+			</li>
+			<?php foreach($this->folderDocs as $doc) {?>
+			<li>
+				<div class='inner-heading'>
+					<?php echo $doc->label?>
+				</div>
+				
+				<div class='inner-content'>
+				<?php
+				foreach($this->siteDocs as $key => $siteDoc) {
+					if($siteDoc->siteFolder == $doc->folder) {
+				?>
+				<?php echo $siteDoc->label?>
+				<?php
+						unset($this->siteDocs[$key]);
+					}
+				}
+				?>
+				</div>
+			</li>
+			<?php }?>
+			
+			<?php if(count($this->siteDocs) > 0) {?>
+			<li>
+				<div class='inner-heading'>
+					未分配空间的站点！
+				</div>
+				<?php foreach($this->siteDocs as $key => $siteDoc) { ?>
+				<?php echo $siteDoc->label?>
+				<?php } ?>
+			</li>
+			<?php } ?>
+		</ul>
+		<ul class='group'>
+			<li class='heading'>管理员</li>
+			<li class='buttonbar'>
+			
+			</li>
+			<?php foreach($this->userDocs as $doc) {?>
+			<li><?php echo $doc->loginName?></li>
+			<?php }?>
+		</ul>
+	</div>
+	
+	<div class='clear'></div>
+</div>
