@@ -69,7 +69,8 @@ class Rest_RemoteSiteController extends Zend_Rest_Controller
 					'siteId' => $orgDoc->getId(),
 					'orgCode' => $orgDoc->getId(),
 					'label' => $orgDoc->orgName.' {'.'shared org folder'.'}',
-					'remoteId' => 'not-set'
+					'remoteId' => 'not-set',
+					'subdomainName' => 'server.apple.fucms.com'
 				);
 				$result['result'] = 'success';
 			}
