@@ -65,14 +65,18 @@ class Rest_RemoteSiteController extends Zend_Rest_Controller
 				$result['errMsg'] = 'site not found with id'. $siteId;
 				$result['result'] = 'fail';
 			} else {
-				$result['data'] = array(
+				$data = array(
 					'siteId' => $orgDoc->getId(),
 					'orgCode' => $orgDoc->getId(),
 					'label' => $orgDoc->orgName.' {'.'shared org folder'.'}',
 					'remoteId' => 'not-set',
 					'subdomainName' => 'server.apple.fucms.com'
 				);
+				$result['data'] = $data;
 				$result['result'] = 'success';
+				$doc = $co->create();
+				$doc->setFromArray($data);
+				$doc->save();
 			}
 		} else {
 			$result['data'] = $doc->toArray();
