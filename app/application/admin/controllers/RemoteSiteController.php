@@ -30,7 +30,11 @@ class Admin_RemoteSiteController extends Zend_Controller_Action
 		require APP_PATH.'/admin/forms/Site/Create.php';
 		$form = new Form_Site_Create();
 		if($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getParams())) {
-			$serverFullName = 'server.'.$form->getValue('server').'.fucms.com';
+			if($form->getValue('server') == 'local') {
+				$serverFullName = 'server.eo.test';
+			} else {
+				$serverFullName = 'server.'.$form->getValue('server').'.fucms.com';
+			}
 			$remotesiteCo = App_Factory::_m('RemoteSite');
 			$remotesiteDoc = $remotesiteCo->create();
 			$remotesiteDoc->orgCode = $orgCode;
@@ -41,16 +45,19 @@ class Admin_RemoteSiteController extends Zend_Controller_Action
 			$siteInfo = array(
 				'organizationCode' => $orgCode,
 				'siteId' => $remotesiteDoc->getId(),
+				'globalId' => $remotesiteDoc->globalId,
+				'subdomainName' => $remotesiteDoc->globalId.'.'.$form->getValue('server').'.fucms.com',
 				'label' => $roDoc->orgName.'-'.$form->getValue('language')
 			);
 			
 			$siteInfoJsonString = Zend_Json::encode($siteInfo);
 			
-			$ch = curl_init("http://".$serverFullName."/rest/site");
+			$ch = curl_init("http://".$serverFullName."/api/site.api");
 			curl_setopt($ch, CURLOPT_POST, true);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, $siteInfoJsonString);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $siteInfo);
 			curl_setopt($ch, CURLOPT_HEADER, 0);
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type:  multipart/form-data'));
 			$returned = curl_exec($ch);
 			
 			if (curl_error($ch)) {
@@ -60,12 +67,8 @@ class Admin_RemoteSiteController extends Zend_Controller_Action
 					$returnArr = Zend_Json::decode($returned);
 				} catch(Exception $e) {
 					Zend_Debug::dump($returned);
-					die();
+					die('here');
 				}
-				
-				$remotesiteDoc->setFromArray($returnArr);
-				
-				$remotesiteDoc->save();
 			}
 			curl_close($ch);
 			

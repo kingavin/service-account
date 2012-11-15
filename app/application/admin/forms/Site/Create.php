@@ -6,7 +6,7 @@ class Form_Site_Create extends Zend_Form
 		$this->addElement('radio', 'server', array(
 			'label' => '服务器',
 			'multioptions' => array(
-				'apple' => 'Apple'
+				'ant' => 'Ant'
 			)
 		));
 		
