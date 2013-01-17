@@ -47,7 +47,7 @@ class Rest_RemoteUserController extends Zend_Rest_Controller
         $result['pageSize'] = $pageSize;
         $result['currentPage'] = $currentPage;
         
-        $this->_helper->json($result);
+        $this->_helper->json(array('content' => $result));
 	}
 	
 	public function getAction()
