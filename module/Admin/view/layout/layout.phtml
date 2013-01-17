@@ -1,0 +1,27 @@
+<?php echo $this->doctype(); ?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<?php echo $this->partial('layout/head'); ?>
+</head>
+
+<body>
+<div class='body_head'>
+	<?php echo $this->partial('layout/admin-toolbar');?>
+</div>
+
+<div class='body_action'>
+	<?php echo $this->brickViewList['body_action'] ?>
+</div>
+
+<div class='body_action_frame'>
+	<?=$this->layout()->content ?>
+</div>
+
+<div class='footer'>
+	<hr />
+	<div class='power'>
+		powered by <a href='http://www.enorange.com'>Enorange Ltd</a>
+	</div>
+</div>
+</body>
+</html>

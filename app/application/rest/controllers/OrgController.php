@@ -61,7 +61,7 @@ class Rest_OrgController extends Zend_Rest_Controller
         $result['pageSize'] = $pageSize;
         $result['currentPage'] = $currentPage;
         
-        $this->_helper->json($result);
+        $this->_helper->json(array('content' => $result));
 	}
 	
 	public function getAction()
